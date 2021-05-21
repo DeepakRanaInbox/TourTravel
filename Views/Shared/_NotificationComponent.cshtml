@@ -1,0 +1,66 @@
+﻿
+@using UtilizationTrackerApp.Utility;
+@{
+    Layout = null;
+
+    NotificationModel MyNotification = null;
+    if (TempData["Notification"] != null)
+    {
+        MyNotification = (UtilizationTrackerApp.Utility.NotificationModel)TempData["Notification"];
+    }
+    string Msg = "";
+
+    if (TempData["Demo"] != null)
+    {
+        Msg = (string)TempData["Demo"];
+    }
+
+}
+
+@if (MyNotification != null && MyNotification.TypeID > 0)
+{
+
+    if (MyNotification.TypeID == 3)
+    {
+        <div class="alert alert-danger alert-dismissable" style="width:100%;border-left: 5px solid; border-bottom: 1px solid; border-top: 1px solid; border-right: 1px solid;">
+            <strong style="font-size:16px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Error ! </strong> <span style="color:black;font-size:14px;">@MyNotification.Message</span>
+            <button type="button" class="close pull-right" data-dismiss="alert" aria-hidden="true" style="color:black;">&times;</button>
+        </div>
+    }
+    else if (MyNotification.TypeID == 2)
+    {
+        <div class="alert alert-warning alert-dismissable" style="width:100%;border-left: 5px solid; border-bottom: 1px solid; border-top: 1px solid; border-right: 1px solid;">
+            <strong style="font-size:16px;"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Warning ! </strong>
+
+            @if (MyNotification.ErrorList != null && MyNotification.ErrorList.Count() > 0)
+            {
+                <br />
+                <ol>
+                    @foreach (string Item in MyNotification.ErrorList)
+                    {
+                        <li>
+                            <span style="color:black;font-size:14px;">@Item</span>
+                        </li>
+                    }
+                </ol>
+            }
+            else
+            {
+                <span style="color:black;font-size:14px;">@MyNotification.Message</span>
+            }
+
+            <button type="button" class="close pull-right" data-dismiss="alert" aria-hidden="true" style="color:black;">&times;</button>
+        </div>
+    }
+    else if (MyNotification.TypeID == 1)
+    {
+        <div class="alert alert-success alert-dismissable" style="width:100%;border-left: 5px solid; border-bottom: 1px solid; border-top: 1px solid; border-right: 1px solid;">
+            <strong style="font-size:16px;"><i class="fa fa-thumbs-o-up" aria-hidden="true"> </i> Success ! </strong> <span style="color:black;font-size:14px;">@MyNotification.Message</span>
+            <button type="button" class="close pull-right" data-dismiss="alert" aria-hidden="true" style="color:black;">&times;</button>
+        </div>
+    }
+
+
+}
+
+ 

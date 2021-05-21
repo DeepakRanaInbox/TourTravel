@@ -1,0 +1,84 @@
+﻿@model   UtilizationTrackerApp.Models.Data.TravelHistory_Model
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #example1_filter {
+        float: right;
+    }
+</style>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Bills</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Bill List</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">DataTable with default features</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Invoice No.</th>
+                                    <th>Username</th>
+                                    <th>Driver Name</th>
+                                    <th>Vehicle No.</th>
+                                    <th>Travel Starting</th>
+                                    <th>Travel Ending</th>
+                                    <th>From/To </th>
+                       
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach (UtilizationTrackerApp.Models.Data.TravelHistory_Model Item in Model.TravelHistory)
+                                {
+                                <tr>
+                                    <td>1</td>
+                                    <td>@Item.vSRNO</td>
+                                    <td>@Item.vUserName</td>
+                                    <td>@Item.vDriverName</td>
+                                    <td>@Item.vVehicleNo</td>
+                                    <td>@Item.dStartingDate</td>
+                                    <td>@Item.dClosingDate</td>
+                                    <td>@Item.vFromToPlace</td>
+                                    <td>@Item.mTotalAmount</td>
+                                    <td>
+                                        
+                                        <a href="@Url.Action("PrintInvoice","Travel",new { id=Item.iTravelID })"><i class="fa fa-print"></i></a>
+                                    </td>
+                                </tr>
+                                }
+                    
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

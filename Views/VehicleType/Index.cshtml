@@ -1,0 +1,101 @@
+﻿@model TourTravel.Models.VehicleType_Model
+@{
+    ViewBag.Title = "Tax";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Tax Master</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">TaxMaster</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Example</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    @using (Html.BeginForm("Create", "VehicleType"))
+                    {
+                        @Html.Partial("_NotificationComponent")
+
+                        @Html.HiddenFor(var => var.ID)
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Vehicle Type</label>
+                                @Html.TextBoxFor(var => var.vName, new { @class = "form-control", placeholder = "Vehicle Type" })
+                                @Html.ValidationMessageFor(var => var.vName)
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+
+                            @if (string.IsNullOrEmpty(Model.ID))
+                            {
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            }
+                            else
+                            {
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            }
+
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Quick Example</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                 
+
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (TourTravel.Models.VehicleType_Model Item in Model.VehicleTypeList)
+                            {
+                                <tr>
+                                    <td>1</td>
+                                    <td>@Item.vName</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit","VehicleType",new {id= Item.ID })">Edit</a>
+                                        <a href="@Url.Action("Delete","VehicleType",new {id= Item.ID })"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

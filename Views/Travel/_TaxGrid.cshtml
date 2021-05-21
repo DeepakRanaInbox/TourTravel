@@ -1,0 +1,170 @@
+﻿@model IEnumerable<TourTravel.Models.MasterData_DTO>
+
+
+ 
+
+<table class="table" id="TaxTable">
+    <thead>
+        <tr>
+            <td  style="width:20%">Apply</td>
+            <td style="width:50%">Tax </td>
+            <td style="width:30%">Tax Amount</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TourTravel.Models.MasterData_DTO Item in Model.ToList())
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" class="taxChk" disabled="disabled" />
+                    <span class="iTax" style="display:none">@Item.ID</span>
+                    <span class="mTax" style="display:none">@Item.vParent</span>
+                </td>
+                <td>@Item.vName</td>
+                <td>  <span class="TaxAmount">0.00</span> </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+              <td colspan="2"> Total Amount After Tax : </td> <td> <span class="RowAfterTax">0.00</span> </td>
+        </tr>
+    </tfoot>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+
+
+        function CalculateTax() {
+
+            
+            var Taxitemlist = "";
+            var total = 0.00;
+            $('#TaxTable tbody tr').each(function () {
+                var value = parseFloat($('td:last-child', this).text());
+                var MyCheck = $('td:first-child', this).find('.taxChk');
+                var iTax = $('td:first-child', this).find('.iTax');
+                
+
+                if (MyCheck.prop('checked') == true) {
+                    if (!isNaN(value)) {
+                        total += value;
+
+                        Taxitemlist = Taxitemlist + "," + $(this).find('.iTax').text() + ":" + value;
+                      
+                    }
+                }
+            });
+
+            var TotalAmountBeforeTax = parseFloat($('.TotalAmountBeforeTax').val());
+            total = total + TotalAmountBeforeTax;
+
+            $('#TaxTable tfoot td').eq(1).text(total);
+            $('.mTotalAmount').val(total)
+            $('.Taxitemlist').val(Taxitemlist)
+            
+        }
+
+        $('.TotalAmountBeforeTax').on('change', function () {
+            CalculationTaxType();
+            CalculateTax();
+        });
+
+        function CalculationTaxType() {
+
+            $('#TaxTable tbody tr').each(function () {
+
+                var MyCheck = $('td:first-child', this).find('.taxChk');
+
+                if ($('td:first-child', this).find('.iTax').text() == "3") {
+
+                    if ($('.selecttaxtype').val() == 1) {
+                        MyCheck.prop('checked', true);
+
+                        var TaxAmount = 0.00;
+                        var TaxRate = 0.00;
+                        var Tax = parseFloat($(this).closest('tr').find('td:eq(0)').find('.mTax').text());
+
+                        var TotalAmountBeforeTax = parseFloat($('.TotalAmountBeforeTax').val());
+
+                        if (isNaN(TotalAmountBeforeTax))
+                            TotalAmountBeforeTax = 0.00;
+
+                        TaxRate = (Tax / 100);
+
+                        TaxAmount = (TotalAmountBeforeTax * TaxRate);
+
+                        $(this).closest('tr').find('td:eq(2)').find('.TaxAmount').text(TaxAmount);
+
+                    }
+                    else {
+                        MyCheck.prop('checked', false);
+                    }
+
+
+                }
+                else {
+                    if ($('.selecttaxtype').val() == 1) {
+                        MyCheck.prop('checked', false);
+                    }
+                    else {
+                        MyCheck.prop('checked', true);
+
+                        var TaxAmount = 0.0;
+                        var TaxRate = 0.0;
+                        var Tax = parseFloat($(this).closest('tr').find('td:eq(0)').find('.mTax').text());
+
+
+                        var TotalAmountBeforeTax = parseFloat($('.TotalAmountBeforeTax').val());
+
+                        TaxRate = (Tax / 100);
+
+                        TaxAmount = (TotalAmountBeforeTax * TaxRate);
+
+                        $(this).closest('tr').find('td:eq(2)').find('.TaxAmount').text(TaxAmount);
+
+                    }
+                }
+
+            });
+
+        }
+
+        $('.selecttaxtype').on('change', function () {
+             
+            CalculationTaxType();
+             
+           CalculateTax();
+        });
+        
+
+        //$('.taxChk').on('change', function () {
+
+        //    alert("taxChk change");
+        //    var MasterserviceId = parseInt($(this).val());
+        //    var CurrentRow = $(this).closest('tr').index();
+
+        //    if ($(this).prop('checked') == true) {
+        //        var TaxAmount = 0.0;
+        //        var TaxRate = 0.0;
+        //        var Tax = parseFloat($(this).closest('tr').find('td:eq(0)').find('.mTax').text());
+
+
+        //        var TotalAmountBeforeTax = parseFloat($('.TotalAmountBeforeTax').val());
+
+        //        TaxRate = (Tax / 100);
+
+        //        TaxAmount = (TotalAmountBeforeTax * TaxRate);
+
+        //        $(this).closest('tr').find('td:eq(2)').find('.TaxAmount').text(TaxAmount);
+        //    }
+        //    else {
+        //        $(this).closest('tr').find('td:eq(2)').find('.TaxAmount').text("0.00");
+        //    }
+
+        //    CalculateTax();
+        //});
+    });
+</script>
